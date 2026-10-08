@@ -1,6 +1,6 @@
 # 淘项运营工作区 Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task after user review. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task after user review. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** 交付可同步的运营工作区和可验证的利润、目标单量测算工具。
 
@@ -39,12 +39,12 @@
 - `daily_profit(unit_profit: Decimal, orders: int, fixed: Decimal) -> Decimal`：利润可为负，单量为非负整数，固定费用非负。
 - `required_orders(unit_profit: Decimal, target: Decimal, fixed: Decimal) -> int | None`：非正贡献利润返回 None；其余使用向下取整加一。
 
-- [ ] 写失败测试：售价 100、采购 30、包装 2、运费 5、费率 0.05、推广 8、售后 3 的贡献利润为 47；50 单、固定费用 100 的日利润为 2250。
-- [ ] 写边界测试：贡献利润 20/40/80、目标 2000、固定费用 0，目标单量为 101/51/26；固定费用 100、利润 40 时为 53。
-- [ ] 写精度测试：贡献利润 40.000001 时目标单量为 50；利润为 0 或负数返回 None；NaN、Infinity、负费用、费率 1.01 和超过输入范围的数报 ValueError。
-- [ ] 执行 `python3 -m unittest discover -s tests -p test_profit.py -v`，确认失败来自缺失模块或行为。
-- [ ] 实现模块；使用 Decimal，禁止 float 运算；金额展示留给命令行处理。
-- [ ] 重跑 Task 1 测试，全部通过后提交计算模块和测试。
+- [x] 写失败测试：售价 100、采购 30、包装 2、运费 5、费率 0.05、推广 8、售后 3 的贡献利润为 47；50 单、固定费用 100 的日利润为 2250。
+- [x] 写边界测试：贡献利润 20/40/80、目标 2000、固定费用 0，目标单量为 101/51/26；固定费用 100、利润 40 时为 53。
+- [x] 写精度测试：贡献利润 40.000001 时目标单量为 50；利润为 0 或负数返回 None；NaN、Infinity、负费用、费率 1.01 和超过输入范围的数报 ValueError。
+- [x] 执行 `python3 -m unittest discover -s tests -p test_profit.py -v`，确认失败来自缺失模块或行为。
+- [x] 实现模块；使用 Decimal，禁止 float 运算；金额展示留给命令行处理。
+- [x] 重跑 Task 1 测试，全部通过后提交计算模块和测试。
 
 ## Task 2：可直接运行的命令行工具
 
@@ -52,11 +52,11 @@
 
 **Interfaces:** `main(argv: list[str] | None = None) -> int`；`python -m taoxiang` 使用 Task 1 模块。
 
-- [ ] 写 subprocess 失败测试：完整参数输入得到预计每单贡献利润 47.00、预计日利润 2250.00、严格超过目标至少 45 单（固定费用 100，目标 2000）。
-- [ ] 写 subprocess 失败测试：缺少成本参数、无效数字、非整数或负单量、NaN、超大数字退出非零且输出无 traceback；亏损模型正常输出无法通过增加单量达到目标。
-- [ ] 执行 `python3 -m unittest discover -s tests -p test_cli.py -v`，确认目标功能尚未实现。
-- [ ] 实现必填参数 `--price --purchase --packaging --shipping --fee-rate --advertising --aftersales --fixed --orders`；可选 `--target` 默认 2000。提供中文帮助、两位小数展示、预计标签和未录入费用说明。
-- [ ] 重跑完整测试；执行完整 CLI 正常案例与错误案例，检查退出码后提交。
+- [x] 写 subprocess 失败测试：完整参数输入得到预计每单贡献利润 47.00、预计日利润 2250.00、严格超过目标至少 45 单（固定费用 100，目标 2000）。
+- [x] 写 subprocess 失败测试：缺少成本参数、无效数字、非整数或负单量、NaN、超大数字退出非零且输出无 traceback；亏损模型正常输出无法通过增加单量达到目标。
+- [x] 执行 `python3 -m unittest discover -s tests -p test_cli.py -v`，确认目标功能尚未实现。
+- [x] 实现必填参数 `--price --purchase --packaging --shipping --fee-rate --advertising --aftersales --fixed --orders`；可选 `--target` 默认 2000。提供中文帮助、两位小数展示、预计标签和未录入费用说明。
+- [x] 重跑完整测试；执行完整 CLI 正常案例与错误案例，检查退出码后提交。
 
 ## Task 3：运营资料和跨电脑同步
 
@@ -64,13 +64,13 @@
 
 **Interfaces:** 模板仅含表头或填写说明，不提供虚构商品；README 使用 Task 2 的实际参数。
 
-- [ ] 店铺档案写入已知预算范围、未选定品类和目标日期；路线图复制设计的五个检查阶段，并提供进度记录位置。
-- [ ] 选品 CSV 表头覆盖候选 ID、商品、供应商、采购、运费、售后、竞争观察、来源、日期；SKU 表头覆盖商品 ID、SKU、规格、成本、售价、库存、依据；日报覆盖日期、订单、收入、退款、成本、推广、其他费用、预计或已结算状态。
-- [ ] 商品模板包含标题、卖点证据、详情页结构、图片需求、SKU 引用及草稿状态；数据政策要求实际私人资料放入 `private/`，图片原稿不进入公开仓库。
-- [ ] `.gitignore` 忽略 `private/`、`.env`、`.env.*`、虚拟环境和 Python 缓存；同步文档区分可公开资料与私人资料。
-- [ ] Windows 文档提供 Git 与 Python 前提、仅在 `F:\淘项` 不存在时克隆、目录存在时先检查 `git status` 与 remote、不覆盖文件、正常 `git pull --ff-only`、提交推送和冲突处理流程；提供同一 CLI 命令的 `py -3` 版本。
-- [ ] README 说明数据来源、协作职责、运行和测试命令；只读检查 GitHub 仓库可见性，无法确认时说明未确认，并坚持提交内容可公开。
-- [ ] 用 csv.reader 核验三个 CSV 的表头、UTF-8、无假数据；用 `git check-ignore` 核验私人文件路径被忽略；运行 README 的 Linux 命令；检查 git diff 后提交。
+- [x] 店铺档案写入已知预算范围、未选定品类和目标日期；路线图复制设计的五个检查阶段，并提供进度记录位置。
+- [x] 选品 CSV 表头覆盖候选 ID、商品、供应商、采购、运费、售后、竞争观察、来源、日期；SKU 表头覆盖商品 ID、SKU、规格、成本、售价、库存、依据；日报覆盖日期、订单、收入、退款、成本、推广、其他费用、预计或已结算状态。
+- [x] 商品模板包含标题、卖点证据、详情页结构、图片需求、SKU 引用及草稿状态；数据政策要求实际私人资料放入 `private/`，图片原稿不进入公开仓库。
+- [x] `.gitignore` 忽略 `private/`、`.env`、`.env.*`、虚拟环境和 Python 缓存；同步文档区分可公开资料与私人资料。
+- [x] Windows 文档提供 Git 与 Python 前提、仅在 `F:\淘项` 不存在时克隆、目录存在时先检查 `git status` 与 remote、不覆盖文件、正常 `git pull --ff-only`、提交推送和冲突处理流程；提供同一 CLI 命令的 `py -3` 版本。
+- [x] README 说明数据来源、协作职责、运行和测试命令；只读检查 GitHub 仓库可见性，无法确认时说明未确认，并坚持提交内容可公开。
+- [x] 用 csv.reader 核验三个 CSV 的表头、UTF-8、无假数据；用 `git check-ignore` 核验私人文件路径被忽略；运行 README 的 Linux 命令；检查 git diff 后提交。
 
 ## Task 4：验证、推送与云配置
 
@@ -78,11 +78,11 @@
 
 **Interfaces:** 消费 README 的目录及已验证命令；使用 cloud-environment-onboarding:setup 配置工具。
 
-- [ ] 执行 Python 版本检查、完整 unittest、正常 CLI、非法输入 CLI、严格目标边界；记录实际测试数量和结果，错误命令退出码单独核验。
-- [ ] `git diff --check` 与工作区检查；提交并推送到 main，核验远端 SHA 等于本地 HEAD。失败则报告具体原因，不把提交成功当作推送成功。
-- [ ] 保存 start_skill：使用现有 `/workspace/taobao_qianniu`，无需 worktree；Python 3.11+、无第三方依赖、测试与假设测算命令；没有常驻服务；私人数据边界。
-- [ ] 无安装需求时不保存空 install_script；确认保存结果，不将保存称为发布或新实例验证。
-- [ ] 最终交付说明工具功能、测试、GitHub 提交、云配置字段、用户在环境设置中审阅与发布、Windows 目录需用户实际同步，以及尚缺的真实选品和经营数据。
+- [x] 执行 Python 版本检查、完整 unittest、正常 CLI、非法输入 CLI、严格目标边界；记录实际测试数量和结果，错误命令退出码单独核验。
+- [x] `git diff --check` 与工作区检查；提交并推送到 main，核验远端 SHA 等于本地 HEAD。失败则报告具体原因，不把提交成功当作推送成功。
+- [x] 保存 start_skill：使用现有 `/workspace/taobao_qianniu`，无需 worktree；Python 3.11+、无第三方依赖、测试与假设测算命令；没有常驻服务；私人数据边界。
+- [x] 无安装需求时不保存空 install_script；确认保存结果，不将保存称为发布或新实例验证。
+- [x] 最终交付说明工具功能、测试、GitHub 提交、云配置字段、用户在环境设置中审阅与发布、Windows 目录需用户实际同步，以及尚缺的真实选品和经营数据。
 
 ## 自审与执行方式
 

@@ -1,6 +1,8 @@
+import os
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -10,8 +12,10 @@ BASE = ['--price','100','--purchase','30','--packaging','2','--shipping','5',
 
 class CliTests(unittest.TestCase):
     def run_cli(self, args):
+        child_env = os.environ.copy()
+        child_env['PYTHONIOENCODING'] = 'utf-8'
         return subprocess.run([sys.executable,'-m','taoxiang',*args], cwd=ROOT,
-                              capture_output=True, text=True, encoding='utf-8')
+                              capture_output=True, text=True, encoding='utf-8', env=child_env)
 
     def test_complete_prediction(self):
         result = self.run_cli(BASE)
@@ -47,6 +51,12 @@ class CliTests(unittest.TestCase):
         result=self.run_cli(['--help'])
         self.assertEqual(result.returncode,0)
         self.assertIn('假设',result.stdout)
+
+    def test_subprocess_capture_under_non_utf8_locale(self):
+        with patch.dict(os.environ, {'PYTHONIOENCODING': 'gbk'}):
+            result = self.run_cli(BASE)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('预计每单贡献利润：47.00', result.stdout)
 
     def test_exact_target_requires_another_order(self):
         args=['--price','40','--purchase','0','--packaging','0','--shipping','0',
