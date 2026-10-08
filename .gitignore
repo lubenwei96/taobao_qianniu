@@ -1,0 +1,8 @@
+private/
+.env
+.env.*
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.superpowers/
