@@ -9,7 +9,7 @@ def main(argv: list[str] | None = None) -> int:
     fields = {
         'price': '优惠后实际成交售价', 'purchase': '每单采购成本',
         'packaging': '每单包装成本', 'shipping': '商家承担每单运费',
-        'fee-rate': '平台费率（0.05 表示 5%）', 'advertising': '每单推广成本',
+        'fee-rate': '平台费率（0.05 表示 5%%）', 'advertising': '每单推广成本',
         'aftersales': '预计每单售后损失', 'fixed': '日固定及其他经营费用',
     }
     for flag, help_text in fields.items():
